@@ -19,9 +19,9 @@ struct PointPeople{//структура точка с частотой
 };
 PointPeople data[100000] = {};//массив всех точек с частотой
 double l0 = 42,zone = 7;
-double* equation(double a, double b, double c, double d) {
-    double z = -1 * (b + a); // = -2 right
-    double v = a * b - c * d; // = -3 right
+double* equation(double a, double b, double c, double d) {//квадратное уравнение вида: (a-x)*(b-x)-c*d
+    double z = -1 * (b + a);
+    double v = a * b - c * d;
     double D = z * z - 4 * v;
     double* x;
     x = new double[2];
@@ -30,16 +30,16 @@ double* equation(double a, double b, double c, double d) {
         return 0;
     }
     else {
-        x[0] = (-1 * z + sqrt(z * z - 4 * v)) / 2; // = 3 right
-        x[1] = (-1 * z - sqrt(z * z - 4 * v)) / 2; // = -1 right
+        x[0] = (-1 * z + sqrt(z * z - 4 * v)) / 2; 
+        x[1] = (-1 * z - sqrt(z * z - 4 * v)) / 2; 
         return x;
     }
 }
 
-double* SLAU(double** a, double x2) {
+double* SLAU(double** a, double x2) {//Решение слау параметры массив векторов и свободная переменная
     double* x;
     x = new double[2];
-    x = equation(a[0][0], a[1][1], a[1][0], a[0][1]); // a[0][0] - a, a[1][1] - b, a[1][0] - c, a[0][1] - d
+    x = equation(a[0][0], a[1][1], a[1][0], a[0][1]);
     double* ans;
     ans = new double[4];
     int j = 0;
@@ -48,20 +48,18 @@ double* SLAU(double** a, double x2) {
         ans[i] = x1;
         ans[i + 1] = x2;
         j++;
-        // ans[0] и ans[1] - решения при 1 корне = (1, 1) right
-        // ans[2] и ans[3] - решения при 2 корне = (-1, 1) right
     }
     return ans;
 }
 
-double dot_product(double *x, double *y) { 
+double dot_product(double *x, double *y) {//скалярное произведение параметры вектор1 вектор2
     int i; 
     double ans = 0; 
     for(i=0; i<2; ++i) 
         ans += x[i]*y[i]; 
     return ans; 
 } 
-void normalize(double *x) { 
+void normalize(double *x) { //нормирование вектора
     double norm = sqrt(dot_product(x, x)); 
     int i; 
     for(i=0; i<2; ++i) 
@@ -81,7 +79,7 @@ void gram_schimdt(double q[][2], int n) {
     } 
      
 
-double* FindVectors(int a, int b, int c, int d) {
+double* FindVectors(int a, int b, int c, int d) {//Поиск напр. векторов по матрицы
     double** arr = new double* [2];
     for (int i = 0; i < 2; i++) {
         arr[i] = new double[2];
@@ -137,7 +135,7 @@ void InputData(){//ввод данных
 	}
 	
 }
-Point Desperssion(PointPeople *arr, int N,Point expect){//дисперсия xy
+Point Dispersion (PointPeople *arr, int N,Point expect){//дисперсия xy параметры массив точек с частотой и размер массива
 	Point desp;
 	desp.x = 0;
 	desp.y = 0;
@@ -151,7 +149,7 @@ Point Desperssion(PointPeople *arr, int N,Point expect){//дисперсия xy
 	}
 	return desp;
 }
-double Expectationxy(PointPeople *arr, int N){//мат ожидание xy
+double Expectationxy(PointPeople *arr, int N){//мат ожидание xy параметры массив точек с частотой и размер массива
 	double people = 0;//общие значение людей
 	for(int i = 0; i < N;i++){
 		people+=arr[i].freq;
@@ -162,7 +160,7 @@ double Expectationxy(PointPeople *arr, int N){//мат ожидание xy
 	}
 	return expect;
 }
-Point Expectations(PointPeople *arr, int N){//мат ожидание
+Point Expectations(PointPeople *arr, int N){//мат ожидание параметры массив точек с частотой и размер массива
 	double people = 0;//общие значение людей
 	for(int i = 0; i < N;i++){
 		people+=arr[i].freq;
@@ -176,7 +174,7 @@ Point Expectations(PointPeople *arr, int N){//мат ожидание
 	}
 	return expect;
 }
-Point RotateCoord(Point p, double alpha){//поворот координат
+Point RotateCoord(Point p, double alpha){//поворот координат параметры точка и угол
 	Point pt;
 	pt.x = p.x*cos(alpha)+p.y*cos(alpha);
 	pt.y =-p.x*cos(alpha)+p.y*cos(alpha);
@@ -189,18 +187,22 @@ int main (){
 	ofstream out("outdata.txt");
 	InputData();//ввод данных
 	Point M = Expectations(data,Data_Size);//мат ожидание
-	Point D = Desperssion(data,Data_Size,M);//дисперсия 
+	Point D = Dispersion (data,Data_Size,M);//дисперсия 
 	double Mxy = Expectationxy(data,Data_Size);//мат ожидание xy
 	double r = (Mxy-M.x*M.y)/(sqrt(D.x)*sqrt(D.y));//корреляция
 	double alpha = atan((2*r*sqrt(D.x)*sqrt(D.y))/(D.x*D.x-D.y*D.y))/2;//угол поворота оси
 	double ae = sqrt(2/(1/D.x+1/D.y-sqrt(pow((1/D.x-1/D.y),2)+4*(r/(sqrt(D.x)*sqrt(D.y))))*(r/(sqrt(D.x)*sqrt(D.y)))));//большая ось элипса рассеивания
 	double be = sqrt(2/(1/D.x+1/D.y+sqrt(pow((1/D.x-1/D.y),2)+4*(r/(sqrt(D.x)*sqrt(D.y))))*(r/(sqrt(D.x)*sqrt(D.y)))));//малая ось элипса рассеивания
 	double *arr = FindVectors(D.x,r*sqrt(D.x)*sqrt(D.y),r*sqrt(D.x)*sqrt(D.y),D.y);
+	
+	/////////////////////нахождение векторов
 	double matrix[][2]={{arr[0],arr[1]},{arr[2],arr[3]}};
 	double iv[2] = {1,0};
 	double v1[2] ={arr[0],arr[1]};
 	double v2[2] ={arr[2],arr[3]};
     gram_schimdt(matrix,2);
+    //////////////////////
+    
 	out << M.x << " " << M.y << " " << r << " " << l0 << " " << alpha << " " << ae << " " << be << " " << zone << " " << matrix[0][0]  << " "<< matrix[0][1]  << " "<< matrix[1][0]   << " "<< matrix[1][1] ;
 	if(abs(alpha-Angle(v1,iv)) > abs(alpha-Angle(iv,v2)))
 		out << " 1";
