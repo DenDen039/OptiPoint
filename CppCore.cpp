@@ -59,7 +59,7 @@ double dot_product(double *x, double *y) {//скалярное произведение параметры век
         ans += x[i]*y[i]; 
     return ans; 
 } 
-void normalize(double *x) { //нормирование вектора
+void normalize(double *x) { //нормирование вектора параметры вектор
     double norm = sqrt(dot_product(x, x)); 
     int i; 
     for(i=0; i<2; ++i) 
@@ -79,7 +79,7 @@ void gram_schimdt(double q[][2], int n) {
     } 
      
 
-double* FindVectors(int a, int b, int c, int d) {//Поиск напр. векторов по матрицы
+double* FindVectors(int a, int b, int c, int d) {//Поиск напр. векторов матрицы
     double** arr = new double* [2];
     for (int i = 0; i < 2; i++) {
         arr[i] = new double[2];
@@ -125,7 +125,7 @@ void InputData(){//ввод данных
 		stat >> lon;
 		if(l0 == -1){
 			l0 = floor(lon)+1;
-			while(int(l0) % 6 != 0;
+			while(int(l0) % 6 != 0)
 				l0++;
 			zone=int(l0)/6;
 		}
@@ -180,7 +180,7 @@ Point RotateCoord(Point p, double alpha){//поворот координат параметры точка и у
 	pt.y =-p.x*cos(alpha)+p.y*cos(alpha);
 	return pt;
 }
-double Angle (double *v1, double *v2){
+double Angle (double *v1, double *v2){//угол между векторами 
 	return dot_product(v1,v2)/(sqrt(dot_product(v1,v1))*sqrt(dot_product(v2,v2)));
 }
 int main (){
