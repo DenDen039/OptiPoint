@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-int Data_Size = 1129;//количество точек
+int Data_Size = 1129;//РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕС‡РµРє
 #define M_PI 3.14159265358979323846//Pi
-struct Point{//структура точка
+struct Point{//СЃС‚СЂСѓРєС‚СѓСЂР° С‚РѕС‡РєР°
 	double x,y;
 };
-struct PointPeople{//структура точка с частотой
+struct PointPeople{//СЃС‚СЂСѓРєС‚СѓСЂР° С‚РѕС‡РєР° СЃ С‡Р°СЃС‚РѕС‚РѕР№
 	Point coord;
 	double freq;
 	void PrintData(){
@@ -17,9 +17,9 @@ struct PointPeople{//структура точка с частотой
 		cout << "|" << endl;
 	}
 };
-PointPeople data[100000] = {};//массив всех точек с частотой
+PointPeople data[100000] = {};//РјР°СЃСЃРёРІ РІСЃРµС… С‚РѕС‡РµРє СЃ С‡Р°СЃС‚РѕС‚РѕР№
 double l0 = 42,zone = 7;
-double* equation(double a, double b, double c, double d) {//квадратное уравнение вида: (a-x)*(b-x)-c*d
+double* equation(double a, double b, double c, double d) {//РєРІР°РґСЂР°С‚РЅРѕРµ СѓСЂР°РІРЅРµРЅРёРµ РІРёРґР°: (a-x)*(b-x)-c*d
     double z = -1 * (b + a);
     double v = a * b - c * d;
     double D = z * z - 4 * v;
@@ -36,7 +36,7 @@ double* equation(double a, double b, double c, double d) {//квадратное уравнение
     }
 }
 
-double* SLAU(double** a, double x2) {//Решение слау параметры массив векторов и свободная переменная
+double* SLAU(double** a, double x2) {//Р РµС€РµРЅРёРµ СЃР»Р°Сѓ РїР°СЂР°РјРµС‚СЂС‹ РјР°СЃСЃРёРІ РІРµРєС‚РѕСЂРѕРІ Рё СЃРІРѕР±РѕРґРЅР°СЏ РїРµСЂРµРјРµРЅРЅР°СЏ
     double* x;
     x = new double[2];
     x = equation(a[0][0], a[1][1], a[1][0], a[0][1]);
@@ -52,14 +52,14 @@ double* SLAU(double** a, double x2) {//Решение слау параметры массив векторов и 
     return ans;
 }
 
-double dot_product(double *x, double *y) {//скалярное произведение параметры вектор1 вектор2
+double dot_product(double *x, double *y) {//СЃРєР°Р»СЏСЂРЅРѕРµ РїСЂРѕРёР·РІРµРґРµРЅРёРµ РїР°СЂР°РјРµС‚СЂС‹ РІРµРєС‚РѕСЂ1 РІРµРєС‚РѕСЂ2
     int i; 
     double ans = 0; 
     for(i=0; i<2; ++i) 
         ans += x[i]*y[i]; 
     return ans; 
 } 
-void normalize(double *x) { //нормирование вектора параметры вектор
+void normalize(double *x) { //РЅРѕСЂРјРёСЂРѕРІР°РЅРёРµ РІРµРєС‚РѕСЂР° РїР°СЂР°РјРµС‚СЂС‹ РІРµРєС‚РѕСЂ
     double norm = sqrt(dot_product(x, x)); 
     int i; 
     for(i=0; i<2; ++i) 
@@ -79,7 +79,7 @@ void gram_schimdt(double q[][2], int n) {
     } 
      
 
-double* FindVectors(double a, double b, double c, double d) {//Поиск напр. векторов матрицы
+double* FindVectors(double a, double b, double c, double d) {//РџРѕРёСЃРє РЅР°РїСЂ. РІРµРєС‚РѕСЂРѕРІ РјР°С‚СЂРёС†С‹
     double** arr = new double* [2];
     for (int i = 0; i < 2; i++) {
         arr[i] = new double[2];
@@ -93,14 +93,14 @@ double* FindVectors(double a, double b, double c, double d) {//Поиск напр. векто
     return s;
     
 }
-Point GeoToPos(double B, double L){//переобразование гео координат в прямоугольные. Параметры широта и долгота
+Point GeoToPos(double B, double L){//РїРµСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РіРµРѕ РєРѕРѕСЂРґРёРЅР°С‚ РІ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅС‹Рµ. РџР°СЂР°РјРµС‚СЂС‹ С€РёСЂРѕС‚Р° Рё РґРѕР»РіРѕС‚Р°
 	long double  n = zone;
 	B = B * M_PI / 180;
 	L = L * M_PI / 180;
-  	long double e2 = 0.006693421623;//2 ексцентриситет
-  	long double e2f = 0.006738525415;//1 ексцентриситет
-  	long double a = 6378245;//большая ось эллипсоида
-  	long double mu = e2f * cos(2 * B);//мю
+  	long double e2 = 0.006693421623;//2 РµРєСЃС†РµРЅС‚СЂРёСЃРёС‚РµС‚
+  	long double e2f = 0.006738525415;//1 РµРєСЃС†РµРЅС‚СЂРёСЃРёС‚РµС‚
+  	long double a = 6378245;//Р±РѕР»СЊС€Р°СЏ РѕСЃСЊ СЌР»Р»РёРїСЃРѕРёРґР°
+  	long double mu = e2f * cos(2 * B);//РјСЋ
   	long double N = a / (sqrt(1 - e2 * sin(B) * sin(B)));
   	long double X = 6367558.497 * (B - 0.002518466 * sin(2 * B) + 0.000002643 * sin(4 * B) - 0.000000003 * sin(6 * B));
   	long double L0 = 6 * n - 3;
@@ -113,9 +113,9 @@ Point GeoToPos(double B, double L){//переобразование гео координат в прямоугольн
 	p.x = x; p.y = y;
 	return p;
 }
-void InputData(){//ввод данных
-	ifstream stat("statistic.txt");//база данных=)
-	double lat,lon;//долгота и широта
+void InputData(){//РІРІРѕРґ РґР°РЅРЅС‹С…
+	ifstream stat("statistic.txt");//Р±Р°Р·Р° РґР°РЅРЅС‹С…=)
+	double lat,lon;//РґРѕР»РіРѕС‚Р° Рё С€РёСЂРѕС‚Р°
 	Data_Size = 0;
 	while(true){
 		if(stat.eof())
@@ -135,11 +135,11 @@ void InputData(){//ввод данных
 	}
 	
 }
-Point Dispersion (PointPeople *arr, int N,Point expect){//дисперсия xy параметры массив точек с частотой и размер массива
+Point Dispersion (PointPeople *arr, int N,Point expect){//РґРёСЃРїРµСЂСЃРёСЏ xy РїР°СЂР°РјРµС‚СЂС‹ РјР°СЃСЃРёРІ С‚РѕС‡РµРє СЃ С‡Р°СЃС‚РѕС‚РѕР№ Рё СЂР°Р·РјРµСЂ РјР°СЃСЃРёРІР°
 	Point desp;
 	desp.x = 0;
 	desp.y = 0;
-	double people = 0;//общие значение людей
+	double people = 0;//РѕР±С‰РёРµ Р·РЅР°С‡РµРЅРёРµ Р»СЋРґРµР№
 	for(int i = 0; i < N;i++){
 		people+=arr[i].freq;
 	}
@@ -149,8 +149,8 @@ Point Dispersion (PointPeople *arr, int N,Point expect){//дисперсия xy параметры
 	}
 	return desp;
 }
-double Expectationxy(PointPeople *arr, int N){//мат ожидание xy параметры массив точек с частотой и размер массива
-	double people = 0;//общие значение людей
+double Expectationxy(PointPeople *arr, int N){//РјР°С‚ РѕР¶РёРґР°РЅРёРµ xy РїР°СЂР°РјРµС‚СЂС‹ РјР°СЃСЃРёРІ С‚РѕС‡РµРє СЃ С‡Р°СЃС‚РѕС‚РѕР№ Рё СЂР°Р·РјРµСЂ РјР°СЃСЃРёРІР°
+	double people = 0;//РѕР±С‰РёРµ Р·РЅР°С‡РµРЅРёРµ Р»СЋРґРµР№
 	for(int i = 0; i < N;i++){
 		people+=arr[i].freq;
 	}
@@ -160,8 +160,8 @@ double Expectationxy(PointPeople *arr, int N){//мат ожидание xy параметры массив
 	}
 	return expect;
 }
-Point Expectations(PointPeople *arr, int N){//мат ожидание параметры массив точек с частотой и размер массива
-	double people = 0;//общие значение людей
+Point Expectations(PointPeople *arr, int N){//РјР°С‚ РѕР¶РёРґР°РЅРёРµ РїР°СЂР°РјРµС‚СЂС‹ РјР°СЃСЃРёРІ С‚РѕС‡РµРє СЃ С‡Р°СЃС‚РѕС‚РѕР№ Рё СЂР°Р·РјРµСЂ РјР°СЃСЃРёРІР°
+	double people = 0;//РѕР±С‰РёРµ Р·РЅР°С‡РµРЅРёРµ Р»СЋРґРµР№
 	for(int i = 0; i < N;i++){
 		people+=arr[i].freq;
 	}
@@ -174,30 +174,30 @@ Point Expectations(PointPeople *arr, int N){//мат ожидание параметры массив точе
 	}
 	return expect;
 }
-Point RotateCoord(Point p, double alpha){//поворот координат параметры точка и угол
+Point RotateCoord(Point p, double alpha){//РїРѕРІРѕСЂРѕС‚ РєРѕРѕСЂРґРёРЅР°С‚ РїР°СЂР°РјРµС‚СЂС‹ С‚РѕС‡РєР° Рё СѓРіРѕР»
 	Point pt;
 	pt.x = p.x*cos(alpha)+p.y*cos(alpha);
 	pt.y =-p.x*cos(alpha)+p.y*cos(alpha);
 	return pt;
 }
-double Angle (double *v1, double *v2){//угол между векторами 
+double Angle (double *v1, double *v2){//СѓРіРѕР» РјРµР¶РґСѓ РІРµРєС‚РѕСЂР°РјРё 
 	return dot_product(v1,v2)/(sqrt(dot_product(v1,v1))*sqrt(dot_product(v2,v2)));
 }
 int main (){
 	ofstream out("outdata.txt");
-	InputData();//ввод данных
-	Point M = Expectations(data,Data_Size);//мат ожидание
-	Point D = Dispersion (data,Data_Size,M);//дисперсия 
-	double Mxy = Expectationxy(data,Data_Size);//мат ожидание xy
-	double r = (Mxy-M.x*M.y)/(sqrt(D.x)*sqrt(D.y));//корреляция
-	double alpha = atan((2*r*sqrt(D.x)*sqrt(D.y))/(D.x*D.x-D.y*D.y))/2;//угол поворота оси
+	InputData();//РІРІРѕРґ РґР°РЅРЅС‹С…
+	Point M = Expectations(data,Data_Size);//РјР°С‚ РѕР¶РёРґР°РЅРёРµ
+	Point D = Dispersion (data,Data_Size,M);//РґРёСЃРїРµСЂСЃРёСЏ 
+	double Mxy = Expectationxy(data,Data_Size);//РјР°С‚ РѕР¶РёРґР°РЅРёРµ xy
+	double r = (Mxy-M.x*M.y)/(sqrt(D.x)*sqrt(D.y));//РєРѕСЂСЂРµР»СЏС†РёСЏ
+	double alpha = atan((2*r*sqrt(D.x)*sqrt(D.y))/(D.x*D.x-D.y*D.y))/2;//СѓРіРѕР» РїРѕРІРѕСЂРѕС‚Р° РѕСЃРё
 	long double A = 1/D.x;
 	long double B = 1/D.y;
 	long double C = r/(sqrt(D.x)*sqrt(D.y));
-	double ae = sqrt(2/(A+B-sqrt((A-B)*(A-B)+4*C*C)));//большая ось элипса рассеивания
-	double be = sqrt(2/(A+B+sqrt((A-B)*(A-B)+4*C*C)));//малая ось элипса рассеивания
+	double ae = sqrt(2/(A+B-sqrt((A-B)*(A-B)+4*C*C)));//Р±РѕР»СЊС€Р°СЏ РѕСЃСЊ СЌР»РёРїСЃР° СЂР°СЃСЃРµРёРІР°РЅРёСЏ
+	double be = sqrt(2/(A+B+sqrt((A-B)*(A-B)+4*C*C)));//РјР°Р»Р°СЏ РѕСЃСЊ СЌР»РёРїСЃР° СЂР°СЃСЃРµРёРІР°РЅРёСЏ
 	double *arr = FindVectors(D.x,r*sqrt(D.x)*sqrt(D.y),r*sqrt(D.x)*sqrt(D.y),D.y);
-	/////////////////////нахождение векторов
+	/////////////////////РЅР°С…РѕР¶РґРµРЅРёРµ РІРµРєС‚РѕСЂРѕРІ
 	double matrix[][2]={{arr[0],arr[1]},{arr[2],arr[3]}};
 	double iv[2] = {1,0};
 	double v1[2] ={arr[0],arr[1]};
