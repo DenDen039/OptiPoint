@@ -89,7 +89,6 @@ file = open('FinalOutput.txt', "w")
 Mx,My,r,L0,angle,ae,be,zone = inputf[0],inputf[1],inputf[2],inputf[3],inputf[4],inputf[5],inputf[6],inputf[7]
 ax = [float(inputf[8]),float(inputf[9])]
 bx = [float(inputf[10]),float(inputf[11])]
-print(ae,be)
 
 if int(inputf[12]) == 1:
     ax,bx=bx,ax
