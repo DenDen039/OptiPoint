@@ -79,7 +79,7 @@ void gram_schimdt(double q[][2], int n) {
     } 
      
 
-double* FindVectors(int a, int b, int c, int d) {//Поиск напр. векторов матрицы
+double* FindVectors(double a, double b, double c, double d) {//Поиск напр. векторов матрицы
     double** arr = new double* [2];
     for (int i = 0; i < 2; i++) {
         arr[i] = new double[2];
@@ -191,10 +191,12 @@ int main (){
 	double Mxy = Expectationxy(data,Data_Size);//мат ожидание xy
 	double r = (Mxy-M.x*M.y)/(sqrt(D.x)*sqrt(D.y));//корреляция
 	double alpha = atan((2*r*sqrt(D.x)*sqrt(D.y))/(D.x*D.x-D.y*D.y))/2;//угол поворота оси
-	double ae = sqrt(2/(1/D.x+1/D.y-sqrt(pow((1/D.x-1/D.y),2)+4*(r/(sqrt(D.x)*sqrt(D.y))))*(r/(sqrt(D.x)*sqrt(D.y)))));//большая ось элипса рассеивания
-	double be = sqrt(2/(1/D.x+1/D.y+sqrt(pow((1/D.x-1/D.y),2)+4*(r/(sqrt(D.x)*sqrt(D.y))))*(r/(sqrt(D.x)*sqrt(D.y)))));//малая ось элипса рассеивания
+	long double A = 1/D.x;
+	long double B = 1/D.y;
+	long double C = r/(sqrt(D.x)*sqrt(D.y));
+	double ae = sqrt(2/(A+B-sqrt((A-B)*(A-B)+4*C*C)));//большая ось элипса рассеивания
+	double be = sqrt(2/(A+B+sqrt((A-B)*(A-B)+4*C*C)));//малая ось элипса рассеивания
 	double *arr = FindVectors(D.x,r*sqrt(D.x)*sqrt(D.y),r*sqrt(D.x)*sqrt(D.y),D.y);
-	
 	/////////////////////нахождение векторов
 	double matrix[][2]={{arr[0],arr[1]},{arr[2],arr[3]}};
 	double iv[2] = {1,0};
@@ -202,7 +204,6 @@ int main (){
 	double v2[2] ={arr[2],arr[3]};
     gram_schimdt(matrix,2);
     //////////////////////
-    
 	out << M.x << " " << M.y << " " << r << " " << l0 << " " << alpha << " " << ae << " " << be << " " << zone << " " << matrix[0][0]  << " "<< matrix[0][1]  << " "<< matrix[1][0]   << " "<< matrix[1][1] ;
 	if(abs(alpha-Angle(v1,iv)) > abs(alpha-Angle(iv,v2)))
 		out << " 1";
