@@ -79,7 +79,7 @@ void gram_schimdt(double q[][2], int n) {
     } 
      
 
-double* FindVectors(int a, int b, int c, int d) {//Поиск напр. векторов матрицы
+double* FindVectors(double a, double b, double c, double d) {//Поиск напр. векторов матрицы
     double** arr = new double* [2];
     for (int i = 0; i < 2; i++) {
         arr[i] = new double[2];
