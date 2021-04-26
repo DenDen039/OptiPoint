@@ -174,12 +174,6 @@ Point Expectations(PointPeople *arr, int N){//мат ожидание парам
 	}
 	return expect;
 }
-Point RotateCoord(Point p, double alpha){//поворот координат параметры точка и угол
-	Point pt;
-	pt.x = p.x*cos(alpha)+p.y*cos(alpha);
-	pt.y =-p.x*cos(alpha)+p.y*cos(alpha);
-	return pt;
-}
 double Angle (double *v1, double *v2){//угол между векторами 
 	return dot_product(v1,v2)/(sqrt(dot_product(v1,v1))*sqrt(dot_product(v2,v2)));
 }
