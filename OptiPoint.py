@@ -6,7 +6,7 @@ import plotly.express as px
 from tkinter.filedialog import askopenfilename
 from tkinter import *
 
-def ellipse(x_center=0, y_center=0, ax1 = [1, 0],  ax2 = [0,1], a=1, b =1,  N=300):
+def ellipse(a=1, b =1,x_center=0, y_center=0, ax1 = [1, 0],  ax2 = [0,1],  N=300):
     t = np.linspace(0, 2*pi, N)
     xs = a * cos(t)
     ys = b * sin(t)
@@ -15,7 +15,14 @@ def ellipse(x_center=0, y_center=0, ax1 = [1, 0],  ax2 = [0,1], a=1, b =1,  N=30
     x = xp + x_center 
     y = yp + y_center
     return x, y
-
+def RotateCoord(x,y,angle,x_center,y_center):
+    if(angle < 0):
+        x1 = x*cos(angle)-y*sin(angle)+x_center
+        y1 = +x*sin(angle)+y*cos(angle)+y_center
+    else:
+        x1 = x*cos(angle)+y*sin(angle)+x_center
+        y1 = -x*sin(angle)+y*cos(angle)+y_center
+    return x1,y1
 def PosToGeo(x, y,zone,L0):#перевод в географические координаты
     e2 = 0.006693421623
     e2f = 0.006738525415
@@ -89,8 +96,7 @@ file = open('FinalOutput.txt', "w")
 Mx,My,r,L0,angle,ae,be,zone = inputf[0],inputf[1],inputf[2],inputf[3],inputf[4],inputf[5],inputf[6],inputf[7]
 ax = [float(inputf[8]),float(inputf[9])]
 bx = [float(inputf[10]),float(inputf[11])]
-
-if int(inputf[12]) == 1:
+if int(inputf[12]) == 0:
     ax,bx=bx,ax
 os.remove(dirct+'/outdata.txt')#удаление временных файлов
 os.remove(dirct+'/Statistic.txt')#удаление временных файлов
@@ -99,8 +105,9 @@ os.remove(dirct+'/Statistic.txt')#удаление временных файло
 fig = px.scatter_mapbox(data,lat="Lat", lon="Lon", zoom=13,color = "Density")#Создание карты с данными о жителях
 
 ################################################################## Создание эллипса
-x,y = ellipse(float(Mx),float(My),ax, bx, float(ae), float(be))
+x,y = ellipse(float(ae), float(be))
 for i in range(len(x)):
+    x[i],y[i] = RotateCoord(x[i],y[i],float(angle),float(Mx),float(My))
     x[i],y[i] = PosToGeo(float(x[i]),float(y[i]),zone,L0)# Перевод координат
 fig2 = px.line_mapbox(lat=x, lon=y)
 ################################################################## 
