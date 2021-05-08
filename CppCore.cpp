@@ -19,6 +19,7 @@ struct PointPeople{//структура точка с частотой
 };
 PointPeople data[100000] = {};//массив всех точек с частотой
 double l0 = 42,zone = 7;
+
 double* equation(double a, double b, double c, double d) {//квадратное уравнение вида: (a-x)*(b-x)-c*d
     double z = -1 * (b + a);
     double v = a * b - c * d;
@@ -35,7 +36,6 @@ double* equation(double a, double b, double c, double d) {//квадратное уравнение
         return x;
     }
 }
-
 double* SLAU(double** a, double x2) {//–ешение слау параметры массив векторов и свободна€ переменна€
     double* x;
     x = new double[2];
@@ -51,7 +51,6 @@ double* SLAU(double** a, double x2) {//–ешение слау параметры массив векторов и 
     }
     return ans;
 }
-
 double dot_product(double *x, double *y) {//скал€рное произведение параметры вектор1 вектор2
     int i; 
     double ans = 0; 
@@ -64,21 +63,7 @@ void normalize(double *x) { //нормирование вектора параметры вектор
     int i; 
     for(i=0; i<2; ++i) 
         x[i] /= norm; 
-} 
-void gram_schimdt(double q[][2], int n) { 
-    int i, j, k; 
-    for(i=1; i<n; ++i) { 
-        for(j=0; j<i; ++j) { 
-            double scaling_factor = dot_product(q[j], q[i])/ dot_product(q[j], q[j]); 
-            for(k=0; k<2; ++k) 
-                q[i][k] -= scaling_factor*q[j][k]; 
-        } 
-    } 
-    for(i=0; i<n; ++i) 
-        normalize(q[i]); 
-    } 
-     
-
+}     
 double* FindVectors(double a, double b, double c, double d) {//ѕоиск напр. векторов матрицы
     double** arr = new double* [2];
     for (int i = 0; i < 2; i++) {
@@ -93,6 +78,7 @@ double* FindVectors(double a, double b, double c, double d) {//ѕоиск напр. векто
     return s;
     
 }
+
 Point GeoToPos(double B, double L){//переобразование гео координат в пр€моугольные. ѕараметры широта и долгота
 	long double  n = zone;
 	B = B * M_PI / 180;
@@ -190,15 +176,15 @@ int main (){
 	long double C = r/(sqrt(D.x)*sqrt(D.y));
 	double ae = sqrt(2/(A+B-sqrt((A-B)*(A-B)+4*C*C)));//больша€ ось элипса рассеивани€
 	double be = sqrt(2/(A+B+sqrt((A-B)*(A-B)+4*C*C)));//мала€ ось элипса рассеивани€
-	double *arr = FindVectors(D.x,r*sqrt(D.x)*sqrt(D.y),r*sqrt(D.x)*sqrt(D.y),D.y);
 	/////////////////////нахождение векторов
-	double matrix[][2]={{arr[0],arr[1]},{arr[2],arr[3]}};
+	double *arr = FindVectors(D.x,r*sqrt(D.x)*sqrt(D.y),r*sqrt(D.x)*sqrt(D.y),D.y);
 	double iv[2] = {1,0};
 	double v1[2] ={arr[0],arr[1]};
 	double v2[2] ={arr[2],arr[3]};
-    gram_schimdt(matrix,2);
+	normalize(v1);
+	normalize(v2);
     //////////////////////
-	out << M.x << " " << M.y << " " << r << " " << l0 << " " << alpha << " " << ae << " " << be << " " << zone << " " << matrix[0][0]  << " "<< matrix[0][1]  << " "<< matrix[1][0]   << " "<< matrix[1][1] ;
+	out << M.x << " " << M.y << " " << r << " " << l0 << " " << alpha << " " << ae << " " << be << " " << zone << " " << v1[0]  << " "<< v1[1]  << " "<< v2[0]   << " "<< v2[1] ;
 	if((abs(abs(alpha)-abs(Angle(iv,v1))) > abs(abs(alpha)-abs(Angle(iv,v2))) && alpha > 0) || (abs(abs(alpha)-abs(Angle(iv,v1))) < abs(abs(alpha)-abs(Angle(iv,v2))) && alpha < 0))
 		out << " 1";
 	else
