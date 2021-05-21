@@ -16,7 +16,7 @@ def ellipse(a=1, b =1,x_center=0, y_center=0, ax1 = [1, 0],  ax2 = [0,1],  N=300
     y = yp + y_center
     return x, y
 def RotateCoord(x,y,angle,x_center,y_center):
-    if(angle < 0):
+    if(0):
         x1 = x*cos(angle)-y*sin(angle)+x_center
         y1 = +x*sin(angle)+y*cos(angle)+y_center
     else:
